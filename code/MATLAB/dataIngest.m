@@ -2,15 +2,15 @@
 clear; close all;
 dataSubfolder = ['data', filesep];
 vidSubfolder = [dataSubfolder, 'vids', filesep];
-vidFilename = '20230815_224137_1';
+vidFilename = '20230817_161823_1';
 
-idx_frame_initial = 50;
+idx_frame_initial = 10;
 
 % Use r = drawrectangle to find location
-roi_A = [390 315 150 63];
-roi_V = [634 305 188 63];
-roi_Nm = [430 731 58 35];
-roi_RPM = [435 805 40 35];
+roi_A = [400 45 240 115];
+roi_V = [815 57 285 102];
+roi_Nm = [417 710 96 58];
+roi_RPM = [425 830 65 62];
 
 v = VideoReader(strcat(vidFilename,'.mp4'));
 
@@ -30,6 +30,7 @@ for idx_frame = idx_frame_initial:v.NumFrames
     RPM(idx_frame) = processFrame(frame,roi_RPM);
         if RPM(idx_frame) == -1; RPM(idx_frame) = RPM(idx_frame-1); end % interpolate data
         if RPM(idx_frame) < 10; RPM(idx_frame) = RPM(idx_frame-1); end % interpolate data (for single digit values)
+        if RPM(idx_frame) >150; RPM(idx_frame) = RPM(idx_frame-1); end % interpolate for outliers...
     fprintf('Finished Frame %d\n',idx_frame)
 end
 
